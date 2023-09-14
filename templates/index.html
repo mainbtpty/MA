@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="view-port" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="Keywords related to your website">
+    <title>MoonAlpha Analytic</title>
+
+   
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='chat/style.css') }}">
+
+
+    <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+
+    <style>
+      #chatbot {
+        height: 200px; /* set a fixed height for the div */
+        overflow-y: scroll; /* set the vertical scrollbar */
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Moonalphs Analytic Ai</h1>
+    <div class="container border">
+      <div id="chatbot">
+        <p class="botText"><span>Hi There</span></p>
+      </div>
+      <div id="userInput">
+        <input type="text" id="textInput" name="userMessage" placeholder="type Your message..." />
+        <input type="submit" value="send" id="buttonInput" />
+      </div> 
+    </div>
+
+    <script>
+      $('#buttonInput').click(function() {
+        var userText = $('#textInput').val();
+        var userHTML = "<p class='userText'>User: <span>" + userText + "</span></p>";
+        $('#textInput').val("");
+        $('#chatbot').append(userHTML);
+
+        $.get('/chat/getResponse', { userMessage: userText }).done(function(data) {
+          var returnedMessage = "<p class='botText'>Chatbot: <span>" + data + "<span/></p>";
+          $('#chatbot').append(returnedMessage);
+
+          // Automatically scroll to the last conversation line
+          $('#chatbot').scrollTop($('#chatbot').height());
+        });
+      });
+    </script>
+  </body>
+</html>
